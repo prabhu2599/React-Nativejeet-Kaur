@@ -1,21 +1,31 @@
-import { StatusBar } from 'expo-status-bar';
-import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import React, { useState } from 'react';
+import * as Fonts from 'expo-font'
+import { AppLoading } from 'expo'
+import { HomeStack } from "./routes/homeStack";
+import {AboutStack} from "./routes/aboutStack"
+import { AppNavigator } from './routes/drawer';
 
-export default function App() {
-  return (
-    <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
-  );
+
+const getFonts= () => {
+  return Fonts.loadAsync({
+    'Raleway': require('./assets/fonts/Raleway-Regular.ttf'),
+    'Montserrat': require('./assets/fonts/Montserrat-Regular.ttf')
+  })
 }
+export default function App() {
+  const [fonts, setfonts] = useState(false)
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
+  if(fonts) {
+    return (
+      <HomeStack />
+      // <AboutStack />
+      // <AppNavigator />
+    )
+  } else {
+    return (
+    <AppLoading 
+    startAsync={getFonts}
+    onFinish={() => setfonts(true)}
+    />
+)} 
+}
